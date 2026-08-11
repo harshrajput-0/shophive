@@ -1,6 +1,5 @@
 import HexLogo from "../common/logo";
 import { IconButton } from "../ui/IconButton";
-import { Button } from "../ui/Button";
 import {Menu} from "lucide-react";
 
 const Header = () => {
@@ -15,7 +14,6 @@ const Header = () => {
 
 <div className="flex items-center">
     <IconButton variant="ghost" icon={<Menu/>}/>
-    <Button variant="ghost"> Hello </Button>
 
 </div>
 
