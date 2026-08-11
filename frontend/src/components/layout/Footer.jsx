@@ -1,5 +1,6 @@
 // import React from 'react'
 import HexLogo from "../common/logo";
+import { Link } from "react-router-dom";
 
 const footerLink = "text-text-secondary text-[.88rem] font-semibold no-underline";
 const Footer = () => {
@@ -12,9 +13,9 @@ const Footer = () => {
         </div>
 
         <div className="flex gap-5 flex-wrap">
-          <a href="" className={footerLink}>Our Story</a>
-          <a href="" className={footerLink}>Return Policy</a>
-          <a href="" className={footerLink}>Disclaimer</a>
+          <Link to="/about" className={footerLink}>Our Story</Link>
+          <Link to="/return-policy" className={footerLink}>Return Policy</Link>
+          <Link to="/disclaimer" className={footerLink}>Disclaimer</Link>
         </div>
 <div className="text-text-secondary text-[.85rem">
 @{new Date().getFullYear()} Shophive. All rights reserved.
