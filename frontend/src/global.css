@@ -73,8 +73,8 @@
   /* Primary — Honey Amber */
   --color-primary: #c8a26a;
   --color-primary-dark: #a98350;
-  --color-primary-light: #dcbb8b;
-  --color-primary-foreground: #211a10;
+  --color-primary-light: #dcbb8b; 
+  --color-primary-foreground: #211a10; /* amberink */
 
   /* Border */
   --color-border: rgba(230, 190, 120, 0.09);
