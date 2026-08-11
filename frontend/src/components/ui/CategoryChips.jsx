@@ -1,7 +1,7 @@
 import { CATEGORIES } from "../../utils/constants.js"
 
 
-export default function CategoryChips({ value, onChange, includeAll = true }) {
+export function CategoryChips({ value, onChange, includeAll = true }) {
   const chipClass = (active) =>
     `inline-flex items-center gap-2 px-5 py-[11px] rounded-full border font-semibold text-[0.9rem] cursor-pointer ${
       active
