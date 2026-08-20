@@ -15,17 +15,15 @@ const orderSchema = new mongoose.Schema({
                 ref: "Product",
                 required: true,
             },
-            name: {
-                type: String,
+            // Removed since vendor can edit them 
+            vendor: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "User",
                 required: true,
             },
             price: {
                 type: Number,
                 required: true
-            },
-            imageUrl: {
-                type: String,
-                required: true,
             },
             qty: {
                 type: Number,

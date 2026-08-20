@@ -8,26 +8,34 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true, 
+        unique: true,
         lowercase: true,
         index: true,
-    }, 
+    },
     password: {
-        type: String, 
+        type: String,
         required: true,
     },
     role: {
-        type: String, 
+        type: String,
         enum: ["user", "vendor", "admin"],
         default: "user",
     },
+    // For vendor storefront
     avatar: {
         type: String,
-    }, 
+    },
     description: {
         type: String,
-    }
-})
+    },
+    // isMock is for seeded demos only
+    isMock: {
+        type: Boolean,
+        default: true,
+    },
+},
+    { timestamps: true }
+)
 
 
 
