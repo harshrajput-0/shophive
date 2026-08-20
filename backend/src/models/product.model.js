@@ -4,7 +4,7 @@ const productSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-    }, 
+    },
     description: {
         type: String,
         required: true,
@@ -29,8 +29,17 @@ const productSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true,
-    }
-})
+    },
+    ratings: {
+        type: Number,
+        default: 0,
+    },
+    numReviews: {
+        type: Number,
+        default: 0,
+    },
+},
+    { timestamps: true })
 
 const Product = mongoose.model("Product", productSchema);
 
