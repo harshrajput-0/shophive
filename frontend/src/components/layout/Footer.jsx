@@ -1,5 +1,5 @@
 // import React from 'react'
-import HexLogo from "../common/logo";
+import HexLogo from "../ui/HexLogo";
 import { Link } from "react-router-dom";
 
 const footerLink = "text-text-secondary text-[.88rem] font-semibold no-underline";

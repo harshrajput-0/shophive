@@ -113,3 +113,27 @@ a {
   animation: shimmer 2s infinite linear;
 }
 
+
+
+
+/* Responsive: mobile nav toggle + collapsing grids */
+@media (max-width: 860px) {
+  .navToggle { display: flex !important; }
+  .navbar-links {
+    display: none !important;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    background: rgba(0,0,0,.97);
+    padding: 10px 20px 20px;
+    border-bottom: 1px solid rgba(230,190,120,.09);
+  }
+  .navbar-links.open { display: flex !important; }
+  .hero-banner { grid-template-columns: 1fr !important; }
+  .hero-visual { display: none; }
+  .product-detail-grid { grid-template-columns: 1fr !important; }
+  .cart-grid { grid-template-columns: 1fr !important; }
+}
