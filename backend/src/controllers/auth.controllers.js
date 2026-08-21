@@ -1,10 +1,10 @@
-import User from "../models/user.model";
+import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { sendEmail } from "../utils/email";
+import { sendEmail } from "../utils/email.js";
 
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_TOKEN_SECRET, { expiresIn: "30d" });
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
 
 
@@ -17,7 +17,7 @@ export const registerUser = async (req, res) => {
 
         // check if user exist, if yes throw error
         const userExist = await User.findOne({ email });
-        if (!userExist) {
+        if (userExist) {
             return res.status(400).json({ message: "User already exists " });
         };
 
@@ -28,19 +28,17 @@ export const registerUser = async (req, res) => {
         // create the user
         const user = await User.create({ name, email, password: hashedPassword });
         if (user) {
-            // if created create otp
-
-            const otp = Math.floor(100000 + Math.random() * 900000);
-
-            // otp or welcome message
-            const message = `
-                 <h2> Welcome to Shophive, ${name}<h2/>
-                 <p>Thank you for registering on our platform.</p>
-                 <p>Your one-time verification/discount OTP is: <strong>${otp}</strong></p>
-                `
+            // Welcome Message
+             const message = `
+                 <h2>Welcome to Shophive, ${name}!</h2>
+                 <p>Thanks for creating an account with us.</p>
+                 <p>We're glad to have you here. You can now explore Shophive and start using your account.</p>
+                 <p>Enjoy your experience!</p>
+                 <p>— The Shophive Team</p>
+             `;
             // send the email
             await sendEmail({
-                name: user.name,
+                email: user.email,
                 subject: "Welcome to Shophive - Your OTP",
                 message
             })

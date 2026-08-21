@@ -8,7 +8,7 @@ export const sendEmail = async({ email, subject, message }) => {
                 user: process.env.GMAIL_USER,
                 pass: process.env.GMAIL_PASS,
             },
-        }),
+        });
 
         const mailOption = {
             from: `Shophive <${process.env.GMAIL_USER}>`,
