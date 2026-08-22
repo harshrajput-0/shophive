@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { sendEmail } from "../utils/email.js";
+import { response } from "express";
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
@@ -106,8 +107,16 @@ export const loginUser = async (req, res) => {
 
 
 // ====| GET USERS |-----------------------------
+export const getUsers = async (req, res) => {
+    try {
+        // Get users without password
+        const users = await User.find({}).select("-password");
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 
-// Get users without password
+}
 
 
 
