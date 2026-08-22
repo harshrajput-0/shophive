@@ -29,7 +29,7 @@ export const registerUser = async (req, res) => {
         const user = await User.create({ name, email, password: hashedPassword });
         if (user) {
             // Welcome Message
-             const message = `
+            const message = `
                  <h2>Welcome to Shophive, ${name}!</h2>
                  <p>Thanks for creating an account with us.</p>
                  <p>We're glad to have you here. You can now explore Shophive and start using your account.</p>
@@ -68,13 +68,40 @@ export const registerUser = async (req, res) => {
 
 
 // ====| LOGIN USER |------------------------------
+export const loginUser = async (req, res) => {
+    try {
 
-// get fiels from request
-// find the user
-// validate user
-// validate password
+        // get fiels from request
+        const { email, password } = req.body;
 
-// catch error message
+        // find the user
+        const user = await User.findOne({ email });
+
+        // validate user
+        if (!user) {
+            return res.status(401).json({ message: "Invalid Credentials " });
+        }
+        // validate password
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: "Invalid Credentials " });
+        }
+
+        // send response 
+        res.status(200).json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            token: generateToken(user._id),
+        });
+
+    } catch (error) {
+        // catch error message
+        return res.status(500).json({ message: error.message });
+
+    }
+}
 
 
 
