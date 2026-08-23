@@ -150,12 +150,3 @@ export const deleteProduct = async (req, res) => {
     }
 };
 
-module.exports = {
-    getProducts,
-    getProductById,
-    getProductsByVendor,
-    getMyProducts,
-    createProduct,
-    updateProduct,
-    deleteProduct
-};
