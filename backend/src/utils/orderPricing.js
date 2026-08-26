@@ -47,7 +47,7 @@ export const buildOrderItems = async (cartItems) => {
         if (!qty || qty < 1) {
             const err = new Error(`Invalid quantity for ${product.name}`);
             err.status = 400;
-            thow err;
+            throw err;
         }
 
         if (product.stock < qty) {
