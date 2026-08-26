@@ -16,6 +16,7 @@ const sendOrderConfirmationEmail = async (user, order) => {
   await sendEmail({ email: user.email, subject: 'ShopNest - Order Confirmation', message });
 };
 
+// ====| PERSIST ORDER |--------------------------------------------------------------
 export const persistOrder = async ({ user, items, totalAmount, address, paymentMethod, razorpay = {} }) => {
   const order = new Order({
     userId: user._id,
@@ -31,6 +32,7 @@ export const persistOrder = async ({ user, items, totalAmount, address, paymentM
   return created;
 };
 
+// ====| BUILD FAKE ORDER |--------------------------------------------------------------
 export const buildFakeOrder = ({ user, items, totalAmount, address, paymentMethod }) => ({
   _id: new mongoose.Types.ObjectId(),
   userId: user._id,
@@ -44,6 +46,7 @@ export const buildFakeOrder = ({ user, items, totalAmount, address, paymentMetho
   updatedAt: new Date()
 });
 
+// ====| CREATE MOCK ORDER |--------------------------------------------------------------
 export const createMockOrder = async (req, res) => {
   try {
     const { items: cartItems, address } = req.body;
@@ -67,3 +70,14 @@ export const createMockOrder = async (req, res) => {
     res.status(error.status || 500).json({ message: error.message });
   }
 };
+
+
+// ====| GET ORDERS |--------------------------------------------------------------
+export const getOrders = async (req, res) => {
+    try {
+        const orders = await Order.find({}).populate(`userId`, `id name`);
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
