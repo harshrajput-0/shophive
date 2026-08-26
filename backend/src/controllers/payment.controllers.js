@@ -10,6 +10,8 @@ const getInstance = () => new Razorpay({
     key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
+
+// ====| CREATE ORDER |------------------------------------------------------------------
 export const createOrder = async (req, res) => {
     try {
         const { items: cartItems } = req.body;
