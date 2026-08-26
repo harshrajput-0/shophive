@@ -74,22 +74,22 @@ export const createMockOrder = async (req, res) => {
 
 // ====| GET ORDERS |--------------------------------------------------------------
 export const getOrders = async (req, res) => {
-    try {
-        const orders = await Order.find({}).populate(`userId`, `id name`);
-        res.json(orders);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const orders = await Order.find({}).populate(`userId`, `id name`);
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 }
 
 // ====| GET MY ORDERS |--------------------------------------------------------------
 export const getMyOrders = async (req, res) => {
-    try {
-        const orders = await Order.find({ userId: req.user._id });
-        res.json(orders);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    const orders = await Order.find({ userId: req.user._id });
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 }
 
 // ====| UPDATE ORDER STATUS |--------------------------------------------------------------
@@ -114,3 +114,24 @@ export const updateOrderStatus = async (req, res) => {
 
 
 // ====| GET VENDOR EARNING |--------------------------------------------------------------
+export const getVendorEarning = async (req, res) => {
+  try {
+    const orders = await Order.find({ "items.vendor": req.user._id, paymentMethod: "razorpay" });
+
+    let totalEarned = 0;
+    let totalItemsSold = 0;
+
+    orders.forEact((order) => {
+      order.items.forEach((item) => {
+        if (itme.vendor.toString() === req.user._id.toString()) {
+          totalEarned += item.price * item.qty;
+          totalItemsSold += item.qty;
+        }
+      });
+    });
+
+    res.json({ totalEarned, totalItemsSold, orderCount: orders.length });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
