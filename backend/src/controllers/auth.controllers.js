@@ -106,7 +106,7 @@ export const loginUser = async (req, res) => {
 
 
 
-// ====| GET USERS |-----------------------------
+// ====| GET USERS |-------------------------------------------
 export const getUsers = async (req, res) => {
     try {
         // Get users without password
@@ -119,5 +119,51 @@ export const getUsers = async (req, res) => {
 }
 
 
+// ====| UPDATE USER ROLE |--------------------------------------------------
+export const updateUserRole = async (req, res) => {
+    try {
+        const { role } = req.body;
+
+        if (!["user", "vendor"].includes(role)) {
+            return res.status(400).json({ message: "Role must be 'user' or 'vendor'" });
+        }
+
+        const targetUser = await User.findById(req.params.id);
+        if (!targetUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (targetUser.isMock) {
+            return res.status(400).json({ message: "Cannot modify a mock/demo account" });
+        }
+
+        if (targetUser.role === "admin") {
+            return res.status(400).json({ message: "Cannot modify a admin's role here"});
+        }
+
+        if (req.user.isMock) {
+            return res.json({
+                _id: targetUser._id,
+                name: targetUser.name,
+                email: targetUser.email,
+                role,
+                isMock: true,
+            });
+        }
+
+        targetUser.role = role;
+        const updated = await targetUser.save();
+
+        res.json({ 
+            _id: updated._id,
+            name: updated.name,
+            email: updated.email,
+            role: updated.role,
+        })
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
 
 
