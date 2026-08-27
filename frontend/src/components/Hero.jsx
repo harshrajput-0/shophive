@@ -1,4 +1,4 @@
-import { Button } from "./ui/Button"
+import Button from "./ui/Button"
 
 const hexBase = 'absolute flex h-[126px] w-[110px] items-center justify-center font-display text-[2rem] font-bold [clip-path:polygon(25%_3%,75%_3%,100%_50%,75%_97%,25%_97%,0%_50%)]';
 
