@@ -53,7 +53,7 @@ export default function ProductForm({ initialValues, submitLabel, submittingLabe
       {/* Clicking anywhere on this label opens the hidden file input */}
       <label
         htmlFor="productImage"
-        className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-[10px] border border-dashed border-primary px-[18px] py-[34px] text-center"
+        className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-[10px] border border-dashed border-primary px-4.5 py-8.5 text-center"
       >
         <span className={fileName ? 'text-[.9rem] font-bold text-primary' : 'text-[.88rem] font-normal text-text-secondary'}>
           {fileName || 'Click anywhere to upload product image'}

@@ -10,7 +10,7 @@ const variants = {
   danger: `${base} border border-danger bg-transparent text-danger`,
 };
 
-const Button = ({
+export const Button = ({
   as = "button",
   variant = "primary",
   children,
@@ -41,5 +41,3 @@ const Button = ({
     </button>
   );
 };
-
-export default Button;

@@ -1,6 +1,4 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&display=swap");
 
 @import "tailwindcss";
 
@@ -10,16 +8,17 @@
   --color-bg: #000000;
   --color-bg-secondary: #0d0b08;
   --color-bg-tertiary: #161209;
-  --color-bg-transparent: rgba(0,0,0,.85);
+  --color-bg-transparent: rgba(0, 0, 0, 0.85);
 
   /* Text */
   --color-text: #f7efdd;
   --color-text-secondary: #a99a7c;
+  --color-surface-3: #211a0e;
 
   /* Primary — Honey primary */
   --color-primary: #c8a26a;
   --color-primary-dark: #a98350;
-  --color-primary-light: #dcbb8b; 
+  --color-primary-light: #dcbb8b;
   --color-primary-foreground: #211a10; /* primaryink */
 
   /* Border */
@@ -34,11 +33,11 @@
 
 /* 2. Direct Utility Overrides (Bulletproof CSS) */
 .font-body {
-  font-family: 'Manrope', sans-serif !important;
+  font-family: "Manrope", sans-serif !important;
 }
 
 .font-display {
-  font-family: 'Fraunces', serif !important;
+  font-family: "Fraunces", serif !important;
 }
 
 /* 3. Global Base Settings */
@@ -49,7 +48,7 @@ body,
   min-height: 100%;
   background-color: #000000;
   color: #f7efdd;
-  font-family: 'Manrope', sans-serif !important;
+  font-family: "Manrope", sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -113,12 +112,11 @@ a {
   animation: shimmer 2s infinite linear;
 }
 
-
-
-
 /* Responsive: mobile nav toggle + collapsing grids */
 @media (max-width: 860px) {
-  .navToggle { display: flex !important; }
+  .navToggle {
+    display: flex !important;
+  }
   .navbar-links {
     display: none !important;
     position: absolute;
@@ -127,13 +125,23 @@ a {
     right: 0;
     flex-direction: column;
     align-items: stretch;
-    background: rgba(0,0,0,.97);
+    background: rgba(0, 0, 0, 0.97);
     padding: 10px 20px 20px;
-    border-bottom: 1px solid rgba(230,190,120,.09);
+    border-bottom: 1px solid rgba(230, 190, 120, 0.09);
   }
-  .navbar-links.open { display: flex !important; }
-  .hero-banner { grid-template-columns: 1fr !important; }
-  .hero-visual { display: none; }
-  .product-detail-grid { grid-template-columns: 1fr !important; }
-  .cart-grid { grid-template-columns: 1fr !important; }
+  .navbar-links.open {
+    display: flex !important;
+  }
+  .hero-banner {
+    grid-template-columns: 1fr !important;
+  }
+  .hero-visual {
+    display: none;
+  }
+  .product-detail-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .cart-grid {
+    grid-template-columns: 1fr !important;
+  }
 }
