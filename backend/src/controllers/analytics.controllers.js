@@ -14,7 +14,7 @@ export const getAdminStats = async (req, res) => {
         const totalRevenue = realOrders.reduce((account, item) => account + item.totalAmount, 0);
         const mockOrders = await Order.countDocuments({ paymentMethod: "mock" });
 
-        res.json({ totalOrder, totalProduct, totalUsers, totalVendors, totalRevenue, mockOrders});    // No real orders are being carried out so no real orders are added
+        res.json({ totalOrder, totalProduct, totalUsers, totalVendors, totalRevenue, mockOrders });    // No real orders are being carried out so no real orders are added
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
