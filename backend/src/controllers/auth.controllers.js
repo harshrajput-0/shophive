@@ -138,7 +138,7 @@ export const updateUserRole = async (req, res) => {
         }
 
         if (targetUser.role === "admin") {
-            return res.status(400).json({ message: "Cannot modify a admin's role here"});
+            return res.status(400).json({ message: "Cannot modify a admin's role here" });
         }
 
         if (req.user.isMock) {
@@ -154,7 +154,7 @@ export const updateUserRole = async (req, res) => {
         targetUser.role = role;
         const updated = await targetUser.save();
 
-        res.json({ 
+        res.json({
             _id: updated._id,
             name: updated.name,
             email: updated.email,
@@ -167,3 +167,39 @@ export const updateUserRole = async (req, res) => {
 }
 
 
+// ====| UPDATE PROFILE |--------------------------------------------------
+export const updateProfile = async (req, res) => {
+    try {
+        const { name, avatar, description } = req.body;
+
+        if (req.user.isMock) {
+            return res.json({
+                _id: req.user._id,
+                name: req.user.name,
+                email: req.user.email,
+                role: req.user.role,
+                avatar: avatar ?? req.user.avatar,
+                description: description ?? req.user.description,
+                isMock: true,
+            });
+        }
+
+        const user = await User.findById(req.user._id);
+        if (name !== undefined) user.name = name;
+        if (avatar !== undefined) user.avatar = avatar;
+        if (description !== undefined) user.description = description;
+
+        const updated = await user.save();
+        res.json({
+            _id: updated._id,
+            name: updated.name,
+            email: updated.email,
+            role: updated.role,
+            avatar: updated.avatar,
+            description: updated.description,
+        });
+    } catch (error) {
+        const status = error.name === "Validation Error" ? 400 : 500;
+        res.status(status).json({ message: error.message });
+    }
+};
