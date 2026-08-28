@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { X } from 'lucide-react';
 import Button from '../components/ui/Button.jsx';
+import BackToHome from '../components/ui/BackToHome.jsx';
 import { inr } from '../utils/formatCurrency.js';
 import { addItem, removeItem, selectCartItems, selectCartSubtotal } from '../store/slices/cartSlice.js';
 import { showToast } from '../store/slices/uiSlice.js';
@@ -23,6 +24,7 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="px-5 py-22.5 text-center">
+        <BackToHome className="justify-center" />
         <h1 className="mb-3.5 font-display text-[2.2rem] text-text">Your cart is empty</h1>
         <p className="mb-7 text-text-secondary">Add a few jars of honey and come back.</p>
         <Button as='link' to="/shop">Browse the Hive</Button>
@@ -32,6 +34,7 @@ export default function CartPage() {
 
   return (
     <div>
+      <BackToHome />
       <h1 className="mb-8.5 font-display text-[clamp(2.2rem,4vw,3rem)] text-text">Your Cart</h1>
 
       {/* Items list + summary sidebar; sidebar moves below the list on mobile */}

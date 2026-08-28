@@ -3,6 +3,7 @@ import { useNavigate, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { inr } from '../utils/formatCurrency.js';
 import Button from '../components/ui/Button';
+import BackToHome from '../components/ui/BackToHome';
 import { selectCartItems, selectCartSubtotal, clearCart } from '../store/slices/cartSlice.js';
 import { placeOrder } from '../store/slices/ordersSlice.js';
 import { showToast } from '../store/slices/uiSlice.js';
@@ -39,6 +40,7 @@ export default function CheckoutPage() {
 
   return (
     <div>
+      <BackToHome />
       <h1 className="mb-8.5 font-display text-[clamp(2.2rem,4vw,3rem)] text-text">Checkout</h1>
       <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-[1fr_340px]">
         <form onSubmit={handlePlaceOrder} className="flex flex-col gap-4 rounded-[14px] border border-border-strong p-6.5">

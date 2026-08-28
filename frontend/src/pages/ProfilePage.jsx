@@ -5,6 +5,7 @@ import { statusBadgeClass } from '../utils/badgeClasses.js';
 import { resolveOrderItem } from '../utils/resolveOrderItem.js';
 import { fetchMyOrders, selectOrders } from '../store/slices/ordersSlice.js';
 import { selectProducts } from '../store/slices/productsSlice.js';
+import BackToHome from '../components/ui/BackToHome.jsx';
 
 export default function ProfilePage() {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ export default function ProfilePage() {
 
   return (
     <div>
+      <BackToHome />
       <h1 className="mb-2 font-display text-[clamp(2.2rem,4vw,3rem)] text-text">{user.name}</h1>
       <p className="mb-10 text-text-secondary">{user.email}</p>
 

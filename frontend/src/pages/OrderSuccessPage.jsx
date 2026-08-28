@@ -1,6 +1,7 @@
 import { useLocation, Navigate } from 'react-router-dom';
 import { CheckCircle2 } from 'lucide-react';
 import Button from '../components/ui/Button';
+import BackToHome from '../components/ui/BackToHome';
 
 export default function OrderSuccessPage() {
   const { state } = useLocation();
@@ -8,6 +9,7 @@ export default function OrderSuccessPage() {
 
   return (
     <div className="mx-auto max-w-115 px-5 py-22.5 text-center">
+      <BackToHome className="justify-center" />
       <CheckCircle2 size={64} className="mx-auto mb-5 text-success" />
       <h1 className="mb-3 font-display text-[2.2rem] text-text">Order placed!</h1>
       <p className="mb-1.5 text-text-secondary">
