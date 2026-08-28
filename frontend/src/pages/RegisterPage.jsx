@@ -26,7 +26,7 @@ export const RegisterPage = () => {
     if (result.meta.requestStatus === 'fulfilled') {
       dispatch(
         showToast(
-          `Welcome to Shophive, ${result.payload.user.name.split(' ')[0]}!`,
+          `Welcome to Shophive, ${result.payload.name.split(' ')[0]}!`,
           'ok'
         )
       );

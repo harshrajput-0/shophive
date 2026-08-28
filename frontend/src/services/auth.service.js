@@ -1,8 +1,4 @@
-import { dbFindByCredentials, dbFindByEmail, dbInsertUser } from '../mock/mockDB';
 import { axiosClient } from './axiosClient.js';
-
-
-const delay = (v, ms = 350) => new Promise((resolve, reject) => setTimeout(() => (v.error ? reject(v.error) : resolve(v.data)), ms));
 
 export const authService = {
   // POST /auth/login  body: { email, password }  -> { user, token }

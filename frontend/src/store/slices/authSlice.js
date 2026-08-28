@@ -33,15 +33,17 @@ const authSlice = createSlice({
       .addCase(login.pending, (state) => { state.status = 'loading'; state.error = null; })
       .addCase(login.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.user = action.payload.user;
-        localStorage.setItem('shophive_token', action.payload.token);
+        const { token, ...user } = action.payload;
+        state.user = user;
+        localStorage.setItem('shophive_token', token);
       })
       .addCase(login.rejected, (state, action) => { state.status = 'failed'; state.error = action.payload; })
       .addCase(register.pending, (state) => { state.status = 'loading'; state.error = null; })
       .addCase(register.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.user = action.payload.user;
-        localStorage.setItem('shophive_token', action.payload.token);
+        const { token, ...user } = action.payload;
+        state.user = user;
+        localStorage.setItem('shophive_token', token);
       })
       .addCase(register.rejected, (state, action) => { state.status = 'failed'; state.error = action.payload; });
   },

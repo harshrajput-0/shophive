@@ -20,7 +20,7 @@ export const LoginPage = () => {
     setError('');
     const result = await dispatch(login({ email, password }));
     if (result.meta.requestStatus === 'fulfilled') {
-      dispatch(showToast(`Welcome back, ${result.payload.user.name.split(' ')[0]}!`, 'ok'));
+      dispatch(showToast(`Welcome back, ${result.payload.name.split(' ')[0]}!`, 'ok'));
       navigate('/');
     } else {
       setError(result.payload || 'Login failed');
@@ -49,10 +49,6 @@ export const LoginPage = () => {
    
 
 
-        {/* <p style={{ color: theme.textSecondary, fontSize: '.83rem', lineHeight: 1.6, textAlign: 'center' }}>
-          Try <b style={{ color: theme.text }}>user@shophive.com</b> / <b style={{ color: theme.text }}>user123</b>,{' '}
-          or <b style={{ color: theme.text }}>admin@shophive.com</b> / <b style={{ color: theme.text }}>admin123</b>
-        </p> */}
       </form>
 
       <p className='text-center text-text-secondary mt-5'>
