@@ -1,153 +1,65 @@
-import { useState } from 'react';
-import { CATEGORIES } from '../../utils/constants';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { inr } from '../../utils/formatCurrency.js';
+import { addItem, selectCartItems } from '../../store/slices/cartSlice.js';
+import { showToast } from '../../store/slices/uiSlice.js';
 
-const inputClass =
-  'w-full rounded-lg border border-border-strong bg-transparent p-[13px] text-[15px] text-text outline-none font-inherit';
+export default function ProductCard({ product }) {
+  const dispatch = useDispatch();
+  // The backend embeds the vendor directly on each product (populated),
+  // so no separate user lookup is needed here.
+  const vendor = product.vendor;
+  const cartItems = useSelector(selectCartItems);
 
-function readImageAsDataUrl(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = (e) => resolve(e.target.result);
-    reader.readAsDataURL(file);
-  });
-}
-
-// BACKEND INTEGRATION: the image is read client-side into a base64 data URL
-// (fine for a mock). A real backend should instead upload the file to
-// multipart storage (e.g. S3) and store the returned URL in `imageUrl`.
-export default function ProductForm({
-  initialValues,
-  submitLabel,
-  submittingLabel,
-  imageRequired = true,
-  onSubmit,
-}) {
-  const [name, setName] = useState(initialValues?.name || '');
-  const [description, setDescription] = useState(
-    initialValues?.description || ''
-  );
-  const [price, setPrice] = useState(initialValues?.price ?? '');
-  const [category, setCategory] = useState(initialValues?.category || '');
-  const [stock, setStock] = useState(initialValues?.stock ?? '');
-  const [imageDataUrl, setImageDataUrl] = useState(
-    initialValues?.imageUrl || null
-  );
-  const [fileName, setFileName] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-
-  const handleFile = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setFileName(file.name);
-    setImageDataUrl(await readImageAsDataUrl(file));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (imageRequired && !imageDataUrl) return;
-
-    setSubmitting(true);
-
-    await onSubmit({
-      name,
-      description,
-      price: Number(price),
-      category,
-      stock: Number(stock),
-      imageUrl: imageDataUrl,
-    });
-
-    setSubmitting(false);
+  const handleQuickAdd = () => {
+    const existing = cartItems.find((x) => x.productId === product._id);
+    dispatch(addItem({ productId: product._id, name: product.name, price: product.price, imageUrl: product.imageUrl, qty: (existing?.qty || 0) + 1 }));
+    dispatch(showToast(`${product.name} added to cart`, 'ok'));
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <input
-        className={inputClass}
-        type="text"
-        placeholder="Product Name"
-        required
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-
-      <textarea
-        className={inputClass}
-        placeholder="Description"
-        required
-        rows={4}
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-
-      <input
-        className={inputClass}
-        type="number"
-        placeholder="Price"
-        required
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
-
-      <select
-        className={inputClass}
-        required
-        value={category}
-        onChange={(e) => setCategory(e.target.value)}
-      >
-        <option value="" disabled>
-          Category
-        </option>
-
-        {CATEGORIES.map((c) => (
-          <option key={c} value={c}>
-            {c}
-          </option>
-        ))}
-      </select>
-
-      <input
-        className={inputClass}
-        type="number"
-        placeholder="Stock Quantity"
-        required
-        value={stock}
-        onChange={(e) => setStock(e.target.value)}
-      />
-
-      <label
-        htmlFor="productImage"
-        className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-[10px] border border-dashed border-primary px-4.5 py-8.5 text-center"
-      >
-        <span
-          className={
-            fileName
-              ? 'text-[0.9rem] font-bold text-primary'
-              : 'text-[0.88rem] font-normal text-text-secondary'
-          }
-        >
-          {fileName || 'Click anywhere to upload product image'}
+    <div className="relative flex flex-col overflow-hidden rounded-[14px] border border-border bg-bg-secondary">
+      {/* Image + badges */}
+      <div className="relative h-52.5 overflow-hidden bg-black">
+        <img src={product.imageUrl} alt={product.name} className="block h-full w-full object-cover" />
+        {/* Category ribbon, cut into a chevron shape with clip-path */}
+        <span className="absolute top-3.5 left-0 [clip-path:polygon(0_50%,12%_0,100%_0,100%_100%,12%_100%)] bg-primary px-4.5 py-1.75 pr-4 text-[.66rem] font-extrabold tracking-[.04em] text-primary-foreground uppercase">
+          {product.category}
         </span>
+        {product.stock === 0 && (
+          <span className="absolute top-3.5 right-3.5 rounded-md bg-black/75 px-2.5 py-1.25 text-[.68rem] font-bold text-danger">
+            Sold out
+          </span>
+        )}
+      </div>
 
-        <input
-          id="productImage"
-          type="file"
-          accept="image/*"
-          required={imageRequired && !initialValues}
-          onChange={handleFile}
-          className="hidden"
-        />
-      </label>
-
-      <button
-        type="submit"
-        disabled={submitting}
-        className="mt-2 cursor-pointer rounded-[9px] border border-primary bg-primary px-7 py-3.5 text-[14.5px] font-bold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
-      >
-        {submitting ? submittingLabel : submitLabel}
-      </button>
-    </form>
+      {/* Details */}
+      <div className="flex grow flex-col gap-1.5 px-5 pt-4.5 pb-5 text-left">
+        <h3 className="overflow-hidden font-display text-[1.1rem] font-semibold text-ellipsis whitespace-nowrap text-text">
+          {product.name}
+        </h3>
+        {vendor?.name && (
+          <Link to={`/vendor/${vendor._id}`} className="text-[.79rem] font-semibold text-text-secondary">
+            by {vendor.name}
+          </Link>
+        )}
+        <p className="my-1 mb-2.5 font-display text-[1.4rem] font-bold text-primary">{inr(product.price)}</p>
+        <div className="flex gap-2">
+          <Link
+            to={`/product/${product._id}`}
+            className="flex-1 rounded-[9px] border border-border-strong bg-transparent px-3 py-2.5 text-center text-[.85rem] font-bold text-text"
+          >
+            View
+          </Link>
+          <button
+            onClick={handleQuickAdd}
+            disabled={product.stock === 0}
+            className="flex-1 cursor-pointer rounded-[9px] border border-primary bg-primary px-3 py-2.5 text-[.85rem] font-bold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }

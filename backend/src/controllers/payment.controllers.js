@@ -1,9 +1,8 @@
-import mongoose from "mongoose";
 import Razorpay from "razorpay";
 import crypto from "crypto";
 
-import { buildOrderItems } from "../utils/orderPricing";
-import { persistOrder } from "./order.controllers";
+import { buildOrderItems } from "../utils/orderPricing.js";
+import { persistOrder } from "./order.controllers.js";
 
 const getInstance = () => new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -31,3 +30,21 @@ export const createOrder = async (req, res) => {
         res.status(error.status || 500).json({ message: error.message || "Payment Order Creation Failed" });
     }
 }
+
+// ====| VERIFY PAYMENT |------------------------------------------------------------------
+export const verifyPayment = async (req, res) => {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature, items, address } = req.body;
+  const body = razorpay_order_id + '|' + razorpay_payment_id;
+  const expected = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+    .update(body).digest('hex');
+  if (expected !== razorpay_signature) {
+    return res.status(400).json({ message: 'Payment verification failed' });
+  }
+  const { items: builtItems, totalAmount } = await buildOrderItems(items);
+  const order = await persistOrder({
+    user: req.user, items: builtItems, totalAmount, address,
+    paymentMethod: 'razorpay',
+    razorpay: { paymentId: razorpay_payment_id }
+  });
+  res.status(201).json(order);
+};

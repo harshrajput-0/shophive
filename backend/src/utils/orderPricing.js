@@ -1,7 +1,7 @@
 import Product from "../models/product.model.js"
 
 export const decrementStock = async (items) => {
-    const decrement = [];
+    const decremented = [];
 
     for (const item of items) {
         const updated = await Product.findOneAndUpdate(

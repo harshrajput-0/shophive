@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { productService } from '../../services/productService';
+import { productService } from '../../services/product.service.js';
 
 export const fetchProducts = createAsyncThunk('products/fetchAll', () => productService.getAll());
 export const createProduct = createAsyncThunk('products/create', (data) => productService.create(data));

@@ -63,7 +63,8 @@ export const createMockOrder = async (req, res) => {
       items,
       totalAmount,
       address,
-      paymentMethod: 'mock'
+      paymentMethod: 'mock',
+      razorpay: { paymentId: `mock_${Date.now()}` }
     });
     res.status(201).json(created);
   } catch (error) {
@@ -101,7 +102,7 @@ export const updateOrderStatus = async (req, res) => {
     }
 
     if (req.user.isMock) {
-      return res.json({ ...order.toObject(), status: req.user.status || order.status, isMock: true });
+        return res.json({ ...order.toObject(), status: req.body.status || order.status, isMock: true });
     }
 
     order.status = req.body.status || order.status;
@@ -121,9 +122,9 @@ export const getVendorEarning = async (req, res) => {
     let totalEarned = 0;
     let totalItemsSold = 0;
 
-    orders.forEact((order) => {
+    orders.forEach((order) => {
       order.items.forEach((item) => {
-        if (itme.vendor.toString() === req.user._id.toString()) {
+        if (item.vendor.toString() === req.user._id.toString()) {
           totalEarned += item.price * item.qty;
           totalItemsSold += item.qty;
         }

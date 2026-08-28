@@ -5,9 +5,14 @@ import { Link } from "react-router-dom";
 import { CATEGORIES } from '../utils/constants';
 import { chipClass } from '../components/ui/CategoryChips';
 import ProductGrid from "../components/ui/ProductGrid";
+import { useSelector } from 'react-redux';
+import { selectProducts, selectProductsStatus } from '../store/slices/productsSlice';
+
 
 
 const HomePage = () => {
+  const products = useSelector(selectProducts);
+  const status = useSelector(selectProductsStatus);
   return (
     <>
       <Hero />
@@ -21,7 +26,7 @@ const HomePage = () => {
         ))}
       </div>
 
-            <div className="my-15 flex items-center gap-2.5">
+      <div className="my-15 flex items-center gap-2.5">
         <span className="h-px flex-1 bg-border-strong" />
         <span className="text-[.72rem] tracking-[.16em] whitespace-nowrap text-text-secondary uppercase">Featured this week</span>
         <span className="h-px flex-1 bg-border-strong" />

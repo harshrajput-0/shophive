@@ -5,8 +5,7 @@ import { login } from '../store/slices/authSlice';
 import { showToast } from '../store/slices/uiSlice';
 import Button from '../components/ui/Button';
 
-// const inputStyle = { padding: 13, background: theme.bgSecondary, border: `1px solid ${theme.borderStrong}`, borderRadius: 8, color: theme.text, fontSize: 15, outline: 'none', width: '100%', boxSizing: 'border-box' };
-const inputStyle = "p-3 bg-bg-secondary, border-1, border-border-stong, rounded-[8px], text-text, text-4, w-full, border-box";
+const inputStyle = "p-3 bg-bg-secondary border border-border-stong rounded-[8px] text-text text-4 w-full border-box";
 
 export const LoginPage = () => {
   const dispatch = useDispatch();

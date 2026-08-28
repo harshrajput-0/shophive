@@ -6,8 +6,13 @@ import productRoutes from "./src/routes/product.routes.js";
 import paymentRoutes from "./src/routes/payment.routes.js";
 import analyticRoutes from "./src/routes/analytics.routes.js";
 
+import cors from "cors";
+
 const app = express();
 connectDB()
+
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+
 app.use(express.json());
 
 

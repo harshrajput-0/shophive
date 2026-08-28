@@ -17,7 +17,7 @@ const Footer = () => {
           <Link to="/return-policy" className={footerLink}>Return Policy</Link>
           <Link to="/disclaimer" className={footerLink}>Disclaimer</Link>
         </div>
-<div className="text-text-secondary text-[.85rem">
+<div className="text-text-secondary text-[.85rem]">
 @{new Date().getFullYear()} Shophive. All rights reserved.
 </div>
       </div>

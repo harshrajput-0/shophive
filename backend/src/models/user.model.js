@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
     // isMock is for seeded demos only
     isMock: {
         type: Boolean,
-        default: true,
+        default: false,
     },
 },
     { timestamps: true }

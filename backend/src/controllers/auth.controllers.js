@@ -2,7 +2,6 @@ import User from "../models/user.model.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { sendEmail } from "../utils/email.js";
-import { response } from "express";
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
@@ -45,7 +44,7 @@ export const registerUser = async (req, res) => {
             })
 
             // send resoponse with data
-            res.status(200).json({
+            res.status(201).json({
                 _id: user._id,
                 name: user.name,
                 email: user.email,

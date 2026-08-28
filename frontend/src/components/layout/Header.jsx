@@ -1,36 +1,30 @@
 import { useState } from "react";
 import HexLogo from "../ui/HexLogo";
 import { IconButton } from "../ui/IconButton";
-import {
-  ShoppingBag,
-  ShoppingCart,
-  User,
-  // LogOut,
-  // LayoutDashboard,
-  // Package,
-  Menu
-} from 'lucide-react';
+import { ShoppingBag, ShoppingCart, User, LogOut, LayoutDashboard, Package, Menu } from 'lucide-react';
 import { Link } from "react-router-dom";
 
+import { logout } from '../../store/slices/authSlice';
+import { selectCartCount } from '../../store/slices/cartSlice';
+import { showToast } from '../../store/slices/uiSlice';
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 
 
-const LINKS = [
-  { label: "Shop", href: "/", icon: ShoppingBag, },
-  { label: "Cart", href: "/cart", icon: ShoppingCart, },
-  { label: "Login", href: "/login", icon: User, },
-  // { id: "profile", href: "/profile", icon: User, auth: "user", },
-  // { id: "logout", label: "Logout", href: "#", icon: LogOut, auth: "user", },
-  // { id: "admin", label: "Dashboard", href: "/admin", icon: LayoutDashboard, auth: "user", roles: ["admin"], },
-  // { id: "vendor", label: "Products", href: "/vendor/products", icon: Package, auth: "user", roles: ["vendor"], },
-];
-
-
-
-
-const linkStyle = "flex items-center gap-[7px] text-[14.5px] font-semibold text-text-secondary bg-transparent border-0 cursor-pointer font-inherit py-[9px] px-4 rounded-lg relative no-underline";
+const linkClass = 'relative flex items-center gap-1.5 rounded-lg px-3.5 py-2.5 text-[14.5px] font-semibold text-text-secondary no-underline';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+  const cartCount = useSelector(selectCartCount);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(showToast('Signed out'));
+    navigate('/login');
+  };
 
 
 
@@ -40,7 +34,7 @@ const Header = () => {
   return (
     <nav className="flex justify-between items-center px-10 py-4.5 bg-black/85 backdrop-blur-[14px] border-b border-border sticky top-0 z-1000 flex-wrap" >
       <div className="flex items-center gap-2.5">
-        <Link href="/" className=" font-display text-[25px] font-bold text-cream flex items-center gap-2.5 no-underline ">
+        <Link to="/" className=" font-display text-[25px] font-bold text-cream flex items-center gap-2.5 no-underline ">
           <HexLogo />
           ShopHive
         </Link>
@@ -50,46 +44,58 @@ const Header = () => {
         <IconButton onClick={() => setOpen((v) => !v)} variant="ghost" icon={<Menu />}
         className={`hidden bg-none border border-(--border-strong) rounded-[7px] w-9.5 h-9.5 text-(--text) cursor-pointer navToggle sm:hidden`}/>
 
-
-        {/* {LINKS.map(({ label, href, icon: Icon }) => (
-          <Link key={label} href={href} className={`${linkStyle}`}>
-            <Icon size={20} />
-            {label}
+      <ul
+        className={`${open ? 'flex' : 'hidden'} absolute top-full right-0 left-0 flex-col items-stretch gap-2 border-b border-border bg-black/97 px-5 pt-2.5 pb-5 list-none md:static md:flex md:w-auto md:flex-row md:items-center md:border-0 md:bg-transparent md:p-0`}
+      >
+        <li>
+          <Link to="/shop" className={linkClass}>
+            <ShoppingBag size={19} /> <span>Shop</span>
           </Link>
-        ))} */}
-
-{/*    
-   {LINKS.map((link) => {
-  const Icon = link.icon;
-
-  const label =
-    link.id === "profile"
-      ? user?.name
-      : link.label;
-
-  return (
-    <Link key={link.id} href={link.href}>
-      <Icon size={19} />
-      {label}
-    </Link>
-  );
-})} */}
-
-
-    
-
-      <ul className={`flex items-center gap-2 list-none navbar-links${open ? ' open' : ''}`
-      }>
-
-        
-  {LINKS.map(({ label, href, icon: Icon }) => (
-    <li>
-          <Link key={label} href={href} className={`${linkStyle}`}>
-            <Icon size={20} />
-            {label}
+        </li>
+        <li>
+          <Link to="/cart" className={linkClass}>
+            <ShoppingCart size={19} /> <span>Cart</span>
+            {cartCount > 0 && (
+              <span className="flex h-4.25 min-w-4.25 items-center justify-center rounded-[9px] bg-primary px-1 text-[.68rem] font-extrabold text-primary-foreground">
+                {cartCount}
+              </span>
+            )}
           </Link>
+        </li>
+        {user ? (
+          <>
+            <li>
+              <Link to="/profile" className={linkClass}>
+                <User size={19} /> <span>{user.name.split(' ')[0]}</span>
+              </Link>
+            </li>
+            {user.role === 'admin' && (
+              <li>
+                <Link to="/admin" className={linkClass}>
+                  <LayoutDashboard size={19} /> <span>Dashboard</span>
+                </Link>
+              </li>
+            )}
+            {user.role === 'vendor' && (
+              <li>
+                <Link to="/vendor-dashboard" className={linkClass}>
+                  <Package size={19} /> <span>Inventory</span>
+                </Link>
+              </li>
+            )}
+            <li>
+              <button onClick={handleLogout} className={`${linkClass} cursor-pointer border-none bg-none font-[inherit] text-danger!`}>
+                <LogOut size={19} /> <span>Logout</span>
+              </button>
+            </li>
+          </>
+        ) : (
+          <li>
+            <Link to="/login" className={linkClass}>
+              <User size={19} /> <span>Login</span>
+            </Link>
           </li>
-        ))}
+        )}
       </ul>
    </div>
 

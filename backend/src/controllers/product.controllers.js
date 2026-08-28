@@ -5,7 +5,7 @@ import cloudinary from "../config/cloudinary.js";
 // ====| GET PRODUCTS |-------------------------------------
 export const getProducts = async (req, res) => {
     try {
-        const products = await Product.find({}).populate("vendor", "nave avatar description");
+        const products = await Product.find({}).populate("vendor", "name avatar description");
         res.json(products);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -111,9 +111,9 @@ export const updateProduct = async (req, res) => {
 
         product.name = name || product.name;
         product.description = description || product.description;
-        product.price = price || product.price;
+        product.price = price !== undefined && !Number.isNaN(Number(price)) ? price : product.price;
         product.category = category || product.category;
-        product.stock = stock || product.stock;
+        product.stock = stock !== undefined && !Number.isNaN(Number(stock)) ? stock : product.stock;
 
         if (req.file) {
             const result = await cloudinary.uploader.upload(req.file.path);
