@@ -4,6 +4,7 @@ import Layout from "./components/layout/Layout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import RequireAuth from "./routes/RequireAuth.jsx";
 import { fetchProducts } from "./store/slices/productsSlice.js";
+import { pingBackend } from "./services/health.service.js";
 
 // Pages
 import HomePage from "./pages/HomePage";
@@ -35,6 +36,8 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // Fired first and seperately from fetchProducts
+    pingBackend();
     dispatch(fetchProducts());
   }, [dispatch]);
 

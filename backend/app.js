@@ -15,6 +15,9 @@ app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
 app.use(express.json());
 
+// Smaill server call that just need response
+app.get("/api/health", ( req, res ) => res.status(200).json({ status: "ok" }))
+
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/products", productRoutes);
