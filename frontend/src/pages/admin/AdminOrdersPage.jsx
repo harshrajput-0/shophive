@@ -7,6 +7,7 @@ import { resolveOrderItem } from '../../utils/resolveOrderItem.js';
 import { fetchAllOrders, selectOrders, updateOrderStatus } from '../../store/slices/ordersSlice.js';
 import { selectProducts } from '../../store/slices/productsSlice';
 import { showToast } from '../../store/slices/uiSlice.js';
+import BackToHome from '../../components/ui/BackToHome';
 
 const selectClass = 'rounded-lg border border-border-strong bg-bg-secondary px-3 py-2 text-[.85rem] text-text outline-none';
 
@@ -30,6 +31,7 @@ export default function AdminOrdersPage() {
 
   return (
     <div>
+      <BackToHome />
       <h1 className="mb-8.5 font-display text-[clamp(2rem,4vw,2.6rem)] text-text">Manage Orders</h1>
 
       <div className="flex flex-col gap-4">

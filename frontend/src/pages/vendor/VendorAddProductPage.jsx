@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import ProductForm from '../../components/ui/ProductForm';
+import BackToHome from '../../components/ui/BackToHome';
 import { createProduct } from '../../store/slices/productsSlice.js';
 import { showToast } from '../../store/slices/uiSlice.js';
 
@@ -20,6 +21,7 @@ export default function VendorAddProductPage() {
 
   return (
     <div className="mx-auto max-w-140">
+      <BackToHome />
       <h1 className="mb-7.5 font-display text-[2rem] text-text">Add Product</h1>
       <ProductForm submitLabel="Add Product" submittingLabel="Adding…" onSubmit={handleSubmit} />
     </div>

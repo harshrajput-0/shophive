@@ -27,9 +27,7 @@ import VendorAddProductPage from './pages/vendor/VendorAddProductPage';
 import VendorEditProductPage from './pages/vendor/VendorEditProductPage';
 
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
-import AdminAddProductPage from './pages/admin/AdminAddProductPage';
 import AdminProductsPage from './pages/admin/AdminProductsPage';
-import AdminEditProductPage from './pages/admin/AdminEditProductPage';
 import AdminOrdersPage from './pages/admin/AdminOrdersPage';
 import AdminUsersPage from './pages/admin/AdminUsersPage';
 
@@ -73,9 +71,7 @@ const App = () => {
           {/* Admin only */}
           <Route element={<RequireAuth roles={['admin']} />}>
             <Route path="/admin" element={<AdminDashboardPage />} />
-            <Route path="/admin/add-product" element={<AdminAddProductPage />} />
             <Route path="/admin/products" element={<AdminProductsPage />} />
-            <Route path="/admin/edit-product/:id" element={<AdminEditProductPage />} />
             <Route path="/admin/orders" element={<AdminOrdersPage />} />
             <Route path="/admin/users" element={<AdminUsersPage />} />
           </Route>

@@ -6,6 +6,7 @@ import { inr } from '../../utils/formatCurrency.js';
 import { selectProductsByVendor, deleteProduct } from '../../store/slices/productsSlice.js';
 import { showToast } from '../../store/slices/uiSlice.js';
 import { StatCard } from '../../components/ui/StatCard';
+import BackToHome from '../../components/ui/BackToHome';
 
 export default function VendorDashboardPage() {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ export default function VendorDashboardPage() {
 
   return (
     <div>
+      <BackToHome />
       <div className="mb-8.5 flex flex-wrap items-center justify-between gap-4">
         <h1 className="font-display text-[clamp(2rem,4vw,2.6rem)] text-text">My Inventory</h1>
         <Button as='link' to="/vendor-dashboard/add-product" className="inline-flex items-center gap-2">

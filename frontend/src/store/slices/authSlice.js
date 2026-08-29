@@ -17,6 +17,14 @@ export const register = createAsyncThunk('auth/register', async ({ name, email, 
   }
 });
 
+export const updateProfile = createAsyncThunk('auth/updateProfile', async (payload, { rejectWithValue }) => {
+  try {
+    return await authService.updateProfile(payload);
+  } catch (err) {
+    return rejectWithValue(err.message);
+  }
+});
+
 const initialState = { user: null, status: 'idle', error: null };
 
 const authSlice = createSlice({
@@ -45,7 +53,10 @@ const authSlice = createSlice({
         state.user = user;
         localStorage.setItem('shophive_token', token);
       })
-      .addCase(register.rejected, (state, action) => { state.status = 'failed'; state.error = action.payload; });
+      .addCase(register.rejected, (state, action) => { state.status = 'failed'; state.error = action.payload; })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.user = { ...state.user, ...action.payload };
+      });
   },
 });
 

@@ -12,4 +12,10 @@ export const authService = {
     const { data } = await axiosClient.post('/auth/register', { name, email, password });
     return data;
   },
+
+  // PUT /auth/profile  body: { name?, avatar?, description? }  -> updated user (no token)
+  updateProfile: async (payload) => {
+    const { data } = await axiosClient.put('/auth/profile', payload);
+    return data;
+  },
 };

@@ -5,8 +5,9 @@ import { inr } from '../utils/formatCurrency.js';
 import Button from '../components/ui/Button';
 import BackToHome from '../components/ui/BackToHome';
 import { selectCartItems, selectCartSubtotal, clearCart } from '../store/slices/cartSlice.js';
-import { placeOrder } from '../store/slices/ordersSlice.js';
+import { orderPlaced } from '../store/slices/ordersSlice.js';
 import { showToast } from '../store/slices/uiSlice.js';
+import { paymentService } from '../services/payment.service.js';
 
 const inputClass = 'w-full rounded-lg border border-border-strong bg-bg-secondary p-[13px] text-[15px] text-text outline-none';
 
@@ -23,19 +24,65 @@ export default function CheckoutPage() {
 
   const setField = (field) => (e) => setAddress((a) => ({ ...a, [field]: e.target.value }));
 
+  const onOrderPlaced = (order) => {
+    dispatch(orderPlaced(order));
+    dispatch(clearCart());
+    dispatch(showToast('Order placed!', 'ok'));
+    navigate('/order-success', { state: { orderId: order._id } });
+  };
+
+  // Pays through Razorpay: create a payment order, open the checkout modal,
+  // then verify + persist the order once payment succeeds.
+  const placeOrder = () =>
+    new Promise((resolve) => {
+      paymentService
+        .createOrder(items)
+        .then((order) => {
+          if (!window.Razorpay) {
+            dispatch(showToast('Payment could not be loaded — check your connection and try again', 'err'));
+            return resolve();
+          }
+
+          const razorpay = new window.Razorpay({
+            key: order.keyId,
+            amount: order.amount,
+            currency: order.currency,
+            order_id: order.id,
+            name: 'ShopHive',
+            description: 'Order payment',
+            prefill: { name: user?.name, email: user?.email },
+            theme: { color: '#111111' },
+            handler: async (response) => {
+              try {
+                const created = await paymentService.verify({ ...response, items, address });
+                onOrderPlaced(created);
+              } catch (err) {
+                dispatch(showToast(err.message, 'err'));
+              } finally {
+                resolve();
+              }
+            },
+            modal: { ondismiss: () => resolve() },
+          });
+
+          razorpay.on('payment.failed', (response) => {
+            dispatch(showToast(response.error?.description || 'Payment failed', 'err'));
+            resolve();
+          });
+
+          razorpay.open();
+        })
+        .catch((err) => {
+          dispatch(showToast(err.message, 'err'));
+          resolve();
+        });
+    });
+
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
     setPlacing(true);
-    // BACKEND INTEGRATION: a real checkout would create a payment intent
-    // (Stripe/Razorpay) here first, then only call placeOrder after the
-    // payment confirms. This mock skips straight to order creation.
-    const result = await dispatch(placeOrder({ userId: user._id, items, totalAmount: subtotal, address }));
+    await placeOrder();
     setPlacing(false);
-    if (result.meta.requestStatus === 'fulfilled') {
-      dispatch(clearCart());
-      dispatch(showToast('Order placed!', 'ok'));
-      navigate('/order-success', { state: { orderId: result.payload._id } });
-    }
   };
 
   return (
@@ -53,7 +100,7 @@ export default function CheckoutPage() {
           </div>
           <input className={inputClass} placeholder="Country" required value={address.country} onChange={setField('country')} />
           <p className="mt-1.5 text-[.82rem] text-text-secondary">
-            Payment is simulated in this concept — no card details are collected.
+            You'll be taken to Razorpay's secure checkout to complete payment.
           </p>
           <Button type="submit" disabled={placing} className="border-none disabled:opacity-60">
             {placing ? 'Placing Order…' : `Pay ${inr(subtotal)}`}

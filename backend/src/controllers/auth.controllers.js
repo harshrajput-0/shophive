@@ -105,6 +105,23 @@ export const loginUser = async (req, res) => {
 
 
 
+// ====| GET VENDOR BY ID |--------------------------------------------------
+// Public storefront profile: name/avatar/description only, and only for
+// accounts that are actually vendors. Used by VendorPublicPage even when
+// the vendor has zero products.
+export const getVendorById = async (req, res) => {
+    try {
+        const vendor = await User.findOne({ _id: req.params.id, role: "vendor" }).select("name avatar description");
+        if (!vendor) {
+            return res.status(404).json({ message: "Vendor not found" });
+        }
+        res.json(vendor);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+
 // ====| GET USERS |-------------------------------------------
 export const getUsers = async (req, res) => {
     try {

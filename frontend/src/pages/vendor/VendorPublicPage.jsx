@@ -2,35 +2,57 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ProductGrid from '../../components/ui/ProductGrid';
 import { productService } from '../../services/product.service';
+import { userService } from '../../services/user.service';
+import BackToHome from '../../components/ui/BackToHome';
 
-// BACKEND NOTE: there's no public "get vendor by id" endpoint, so the
-// vendor's name/avatar/description are read off the first product in their
-// GET /products/vendor/:vendorId list (that route populates `vendor` fully).
-// If a vendor has zero products, we have no way to show their profile at all.
+// Vendor profile (name/avatar/description) and their product list are fetched
+// independently, so the storefront still renders correctly for a vendor with
+// zero products. `status` reflects the vendor lookup; product loading is
+// handled separately by ProductGrid's own `loading` prop.
 export default function VendorPublicPage() {
   const { id } = useParams();
 
+  const [vendor, setVendor] = useState(null);
   const [products, setProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(true);
   const [status, setStatus] = useState('loading');
 
   useEffect(() => {
-    productService
-      .getByVendor(id)
+    let cancelled = false;
+    setStatus('loading');
+    setProductsLoading(true);
+
+    userService
+      .getVendor(id)
       .then((data) => {
-        setProducts(data);
+        if (cancelled) return;
+        setVendor(data);
         setStatus('succeeded');
       })
       .catch(() => {
-        setStatus('failed');
+        if (!cancelled) setStatus('failed');
       });
+
+    productService
+      .getByVendor(id)
+      .then((data) => {
+        if (cancelled) return;
+        setProducts(data);
+      })
+      .finally(() => {
+        if (!cancelled) setProductsLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
 
-  const vendor = products[0]?.vendor;
-
-  if (status === 'succeeded' && !vendor) {
+  if (status === 'failed') {
     return (
       <div className="px-5 py-22.5 text-center text-text-secondary">
-        This vendor hasn't listed any products yet, so there's nothing to show here.
+        <BackToHome className="justify-center" />
+        This vendor doesn't exist.
       </div>
     );
   }
@@ -39,6 +61,7 @@ export default function VendorPublicPage() {
 
   return (
     <div>
+      <BackToHome />
       <div className="mb-10 flex flex-wrap items-center gap-5.5">
         <img
           src={vendor.avatar}
@@ -63,7 +86,7 @@ export default function VendorPublicPage() {
 
       <ProductGrid
         products={products}
-        loading={status === 'loading'}
+        loading={productsLoading}
         emptyMessage="This vendor hasn't listed any products yet."
       />
     </div>

@@ -1,4 +1,3 @@
-
 import { axiosClient } from './axiosClient';
 
 const errorMessage = (err) => err.response?.data?.message || err.message || 'Something went wrong';
@@ -16,16 +15,11 @@ export const orderService = {
     return data;
   },
 
-
-  create: async (data) => {
-    try {
-      const { data: created } = await axiosClient.post('/orders/mock', data);
-      return created;
-    } catch (err) {
-      throw new Error(errorMessage(err), { cause: err });
-    }
+  // GET /orders/vendor/earnings  (vendor only)  -> { totalEarned, totalItemsSold, orderCount }
+  getVendorEarnings: async () => {
+    const { data } = await axiosClient.get('/orders/vendor/earnings');
+    return data;
   },
-
 
   updateStatus: async (id, status) => {
     try {

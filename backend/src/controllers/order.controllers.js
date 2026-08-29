@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import Order from "../models/order.model.js";
 import { sendEmail } from "../utils/email.js";
 import { buildOrderItems, decrementStock } from "../utils/orderPricing.js";
@@ -31,47 +30,6 @@ export const persistOrder = async ({ user, items, totalAmount, address, paymentM
   await sendOrderConfirmationEmail(user, created);
   return created;
 };
-
-// ====| BUILD FAKE ORDER |--------------------------------------------------------------
-export const buildFakeOrder = ({ user, items, totalAmount, address, paymentMethod }) => ({
-  _id: new mongoose.Types.ObjectId(),
-  userId: user._id,
-  items,
-  totalAmount,
-  address,
-  paymentMethod,
-  status: 'Pending',
-  isMock: true,
-  createdAt: new Date(),
-  updatedAt: new Date()
-});
-
-// ====| CREATE MOCK ORDER |--------------------------------------------------------------
-export const createMockOrder = async (req, res) => {
-  try {
-    const { items: cartItems, address } = req.body;
-    const { items, totalAmount } = await buildOrderItems(cartItems);
-
-    if (req.user.isMock) {
-      return res.status(201).json(
-        buildFakeOrder({ user: req.user, items, totalAmount, address, paymentMethod: 'mock' })
-      );
-    }
-
-    const created = await persistOrder({
-      user: req.user,
-      items,
-      totalAmount,
-      address,
-      paymentMethod: 'mock',
-      razorpay: { paymentId: `mock_${Date.now()}` }
-    });
-    res.status(201).json(created);
-  } catch (error) {
-    res.status(error.status || 500).json({ message: error.message });
-  }
-};
-
 
 // ====| GET ORDERS |--------------------------------------------------------------
 export const getOrders = async (req, res) => {

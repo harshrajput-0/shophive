@@ -1,6 +1,7 @@
 import { useParams, useNavigate, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ProductForm from '../../components/ui/ProductForm';
+import BackToHome from '../../components/ui/BackToHome';
 import { selectProductById, updateProduct } from '../../store/slices/productsSlice.js';
 import { showToast } from '../../store/slices/uiSlice.js';
 
@@ -28,6 +29,7 @@ export default function VendorEditProductPage() {
 
   return (
     <div className="mx-auto max-w-140">
+      <BackToHome />
       <h1 className="mb-7.5 font-display text-[2rem] text-text">Edit Product</h1>
       <ProductForm initialValues={product} imageRequired={false} submitLabel="Save Changes" submittingLabel="Saving…" onSubmit={handleSubmit} />
     </div>
