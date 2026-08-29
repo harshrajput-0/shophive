@@ -10,13 +10,7 @@ const variants = {
   danger: `${base} border border-danger bg-transparent text-danger`,
 };
 
-const Button = ({
-  as = "button",
-  variant = "primary",
-  children,
-  className = "",
-  ...props
-}) => {
+const Button = ({ as = "button", variant = "primary", children, className = "", ...props }) => {
   const classes = `${variants[variant]} ${className}`.trim();
 
   if (as === "link") {
@@ -41,6 +35,5 @@ const Button = ({
     </button>
   );
 };
-
 
 export default Button;

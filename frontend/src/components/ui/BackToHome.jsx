@@ -3,7 +3,7 @@ import { ArrowLeft } from "lucide-react";
 
 // Small "← Back to Home" link for pages that sit outside the main
 // shop→cart→checkout flow (or that a user can land on with no other
-// way back except the header logo). 
+// way back except the header logo).
 export default function BackToHome({ className = "", label = "Back to Home" }) {
   return (
     <Link

@@ -13,8 +13,7 @@
   ],
   "author": "Harsh Rajput",
   "license": "ISC",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "concurrently": "^10.0.5",
     "prettier": "^3.9.6"

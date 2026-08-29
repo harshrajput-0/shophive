@@ -2,7 +2,12 @@ import express from "express";
 import { protect } from "../middlewares/auth.middleware.js";
 import { authorizeRole } from "../middlewares/role.middelware.js";
 
-import { getMyOrders, getOrders, getVendorEarning, updateOrderStatus } from "../controllers/order.controllers.js";
+import {
+  getMyOrders,
+  getOrders,
+  getVendorEarning,
+  updateOrderStatus,
+} from "../controllers/order.controllers.js";
 
 const router = express.Router();
 

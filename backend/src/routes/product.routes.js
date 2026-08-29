@@ -23,12 +23,7 @@ router.get("/vendor/:vendorId", getProductsByVendor);
 router
   .route("/")
   .get(getProducts)
-  .post(
-    protect,
-    authorizeRole("vendor"),
-    upload.single("image"),
-    createProduct,
-  );
+  .post(protect, authorizeRole("vendor"), upload.single("image"), createProduct);
 
 router
   .route("/:id")

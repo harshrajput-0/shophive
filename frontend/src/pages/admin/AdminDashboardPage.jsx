@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { StatCard } from '../../components/ui/StatCard';
-import { selectProducts } from '../../store/slices/productsSlice.js';
-import { fetchAllOrders, selectOrders } from '../../store/slices/ordersSlice.js';
-import { fetchUsers, selectUsers } from '../../store/slices/usersSlice.js';
-import { inr } from '../../utils/formatCurrency.js';
-import BackToHome from '../../components/ui/BackToHome';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { StatCard } from "../../components/ui/StatCard";
+import { selectProducts } from "../../store/slices/productsSlice.js";
+import { fetchAllOrders, selectOrders } from "../../store/slices/ordersSlice.js";
+import { fetchUsers, selectUsers } from "../../store/slices/usersSlice.js";
+import { inr } from "../../utils/formatCurrency.js";
+import BackToHome from "../../components/ui/BackToHome";
 
 export default function AdminDashboardPage() {
   const dispatch = useDispatch();
@@ -23,7 +23,9 @@ export default function AdminDashboardPage() {
   return (
     <div>
       <BackToHome />
-      <h1 className="mb-8.5 font-display text-[clamp(2rem,4vw,2.6rem)] text-text">Admin Dashboard</h1>
+      <h1 className="mb-8.5 font-display text-[clamp(2rem,4vw,2.6rem)] text-text">
+        Admin Dashboard
+      </h1>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4.5">
         <StatCard label="Total Revenue" value={inr(revenue)} />
         <StatCard label="Total Orders" value={orders.length} />

@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import ProductGrid from '../../components/ui/ProductGrid';
-import { productService } from '../../services/product.service';
-import { userService } from '../../services/user.service';
-import BackToHome from '../../components/ui/BackToHome';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import ProductGrid from "../../components/ui/ProductGrid";
+import { productService } from "../../services/product.service";
+import { userService } from "../../services/user.service";
+import BackToHome from "../../components/ui/BackToHome";
 
 // Vendor profile (name/avatar/description) and their product list are fetched
 // independently, so the storefront still renders correctly for a vendor with
@@ -15,11 +15,11 @@ export default function VendorPublicPage() {
   const [vendor, setVendor] = useState(null);
   const [products, setProducts] = useState([]);
   const [productsLoading, setProductsLoading] = useState(true);
-  const [status, setStatus] = useState('loading');
+  const [status, setStatus] = useState("loading");
 
   useEffect(() => {
     let cancelled = false;
-    setStatus('loading');
+    setStatus("loading");
     setProductsLoading(true);
 
     userService
@@ -27,10 +27,10 @@ export default function VendorPublicPage() {
       .then((data) => {
         if (cancelled) return;
         setVendor(data);
-        setStatus('succeeded');
+        setStatus("succeeded");
       })
       .catch(() => {
-        if (!cancelled) setStatus('failed');
+        if (!cancelled) setStatus("failed");
       });
 
     productService
@@ -48,7 +48,7 @@ export default function VendorPublicPage() {
     };
   }, [id]);
 
-  if (status === 'failed') {
+  if (status === "failed") {
     return (
       <div className="px-5 py-22.5 text-center text-text-secondary">
         <BackToHome className="justify-center" />
@@ -74,15 +74,11 @@ export default function VendorPublicPage() {
             {vendor.name}
           </h1>
 
-          <p className="max-w-140 leading-[1.6] text-text-secondary">
-            {vendor.description}
-          </p>
+          <p className="max-w-140 leading-[1.6] text-text-secondary">{vendor.description}</p>
         </div>
       </div>
 
-      <h2 className="mb-5.5 font-display text-[1.5rem] text-text">
-        Products from {vendor.name}
-      </h2>
+      <h2 className="mb-5.5 font-display text-[1.5rem] text-text">Products from {vendor.name}</h2>
 
       <ProductGrid
         products={products}

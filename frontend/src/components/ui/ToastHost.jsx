@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectToasts, dismissToast } from '../../store/slices/uiSlice';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectToasts, dismissToast } from "../../store/slices/uiSlice";
 
 const kindColor = {
-  ok: 'border-l-success',
-  err: 'border-l-danger',
-  default: 'border-l-primary',
+  ok: "border-l-success",
+  err: "border-l-danger",
+  default: "border-l-primary",
 };
 
 function Toast({ toast }) {

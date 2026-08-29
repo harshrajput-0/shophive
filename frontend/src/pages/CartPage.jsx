@@ -1,11 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { X } from 'lucide-react';
-import Button from '../components/ui/Button.jsx';
-import BackToHome from '../components/ui/BackToHome.jsx';
-import { inr } from '../utils/formatCurrency.js';
-import { addItem, removeItem, selectCartItems, selectCartSubtotal } from '../store/slices/cartSlice.js';
-import { showToast } from '../store/slices/uiSlice.js';
-import { QtyStepper } from '../components/ui/QtyStepper';
+import { useDispatch, useSelector } from "react-redux";
+import { X } from "lucide-react";
+import Button from "../components/ui/Button.jsx";
+import BackToHome from "../components/ui/BackToHome.jsx";
+import { inr } from "../utils/formatCurrency.js";
+import {
+  addItem,
+  removeItem,
+  selectCartItems,
+  selectCartSubtotal,
+} from "../store/slices/cartSlice.js";
+import { showToast } from "../store/slices/uiSlice.js";
+import { QtyStepper } from "../components/ui/QtyStepper";
 
 export default function CartPage() {
   const dispatch = useDispatch();
@@ -27,7 +32,9 @@ export default function CartPage() {
         <BackToHome className="justify-center" />
         <h1 className="mb-3.5 font-display text-[2.2rem] text-text">Your cart is empty</h1>
         <p className="mb-7 text-text-secondary">Add a few jars of honey and come back.</p>
-        <Button as='link' to="/shop">Browse the Hive</Button>
+        <Button as="link" to="/shop">
+          Browse the Hive
+        </Button>
       </div>
     );
   }
@@ -41,14 +48,30 @@ export default function CartPage() {
       <div className="grid grid-cols-1 items-start gap-10 md:grid-cols-[1fr_340px]">
         <div className="flex flex-col gap-4.5">
           {items.map((item) => (
-            <div key={item.productId} className="flex items-center gap-4.5 rounded-[14px] border border-border p-4">
-              <img src={item.imageUrl} alt={item.name} className="h-21 w-21 shrink-0 rounded-[10px] object-cover" />
+            <div
+              key={item.productId}
+              className="flex items-center gap-4.5 rounded-[14px] border border-border p-4"
+            >
+              <img
+                src={item.imageUrl}
+                alt={item.name}
+                className="h-21 w-21 shrink-0 rounded-[10px] object-cover"
+              />
               <div className="min-w-0 flex-1">
                 <p className="mb-1 font-display text-[1.05rem] font-bold text-text">{item.name}</p>
                 <p className="font-bold text-primary">{inr(item.price)}</p>
               </div>
-              <QtyStepper value={item.qty} onDec={() => setQty(item, item.qty - 1)} onInc={() => setQty(item, item.qty + 1)} max={item.stock} />
-              <button onClick={() => handleRemove(item)} aria-label="Remove item" className="cursor-pointer border-none bg-none p-1.5 text-text-secondary">
+              <QtyStepper
+                value={item.qty}
+                onDec={() => setQty(item, item.qty - 1)}
+                onInc={() => setQty(item, item.qty + 1)}
+                max={item.stock}
+              />
+              <button
+                onClick={() => handleRemove(item)}
+                aria-label="Remove item"
+                className="cursor-pointer border-none bg-none p-1.5 text-text-secondary"
+              >
                 <X size={20} />
               </button>
             </div>
@@ -70,9 +93,12 @@ export default function CartPage() {
             <span>{inr(subtotal)}</span>
           </div>
 
-        <Button as='link' to="/checkout">Proceed to Checkout</Button>
-        <Button variant='secondary' as='link' to="/shop">Continue Shopping</Button>
-
+          <Button as="link" to="/checkout">
+            Proceed to Checkout
+          </Button>
+          <Button variant="secondary" as="link" to="/shop">
+            Continue Shopping
+          </Button>
         </div>
       </div>
     </div>

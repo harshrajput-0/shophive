@@ -1,14 +1,16 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 const initialState = { toasts: [] };
 
 const uiSlice = createSlice({
-  name: 'ui',
+  name: "ui",
   initialState,
   reducers: {
     showToast: {
-      reducer: (state, action) => { state.toasts.push(action.payload); },
-      prepare: (message, kind = 'default') => ({ payload: { id: nanoid(), message, kind } }),
+      reducer: (state, action) => {
+        state.toasts.push(action.payload);
+      },
+      prepare: (message, kind = "default") => ({ payload: { id: nanoid(), message, kind } }),
     },
     dismissToast: (state, action) => {
       state.toasts = state.toasts.filter((t) => t.id !== action.payload);

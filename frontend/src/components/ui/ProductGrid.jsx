@@ -1,12 +1,16 @@
-import ProductCard from './ProductCard';
+import ProductCard from "./ProductCard";
 
 // const gridClass = 'mt-2.5 grid grid-cols-[repeat(auto-fill,minmax(258px,1fr))] gap-6.5';
 
-
 const skeletonClass =
-  'h-[340px] rounded-[14px] bg-[linear-gradient(90deg,var(--color-bg-secondary)_25%,var(--color-surface-3)_37%,var(--color-bg-secondary)_63%)] bg-[length:400%_100%] animate-[shimmer_1.4s_ease_infinite]';
+  "h-[340px] rounded-[14px] bg-[linear-gradient(90deg,var(--color-bg-secondary)_25%,var(--color-surface-3)_37%,var(--color-bg-secondary)_63%)] bg-[length:400%_100%] animate-[shimmer_1.4s_ease_infinite]";
 
-export default function ProductGrid({ products, loading, emptyMessage = 'No products match your filters.', skeletonCount = 4 }) {
+export default function ProductGrid({
+  products,
+  loading,
+  emptyMessage = "No products match your filters.",
+  skeletonCount = 4,
+}) {
   if (loading) {
     return (
       <div className="mt-2.5 grid grid-cols-[repeat(auto-fill,minmax(258px,1fr))] gap-6.5">

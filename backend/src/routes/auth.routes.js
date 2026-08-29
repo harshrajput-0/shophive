@@ -1,8 +1,14 @@
 import express from "express";
 import { protect } from "../middlewares/auth.middleware.js";
 import { authorizeRole } from "../middlewares/role.middelware.js";
-import { registerUser, loginUser, getUsers, getVendorById, updateUserRole, updateProfile } from "../controllers/auth.controllers.js";
-
+import {
+  registerUser,
+  loginUser,
+  getUsers,
+  getVendorById,
+  updateUserRole,
+  updateProfile,
+} from "../controllers/auth.controllers.js";
 
 const router = express.Router();
 

@@ -2,7 +2,6 @@ import Order from "../models/order.model.js";
 import { sendEmail } from "../utils/email.js";
 import { buildOrderItems, decrementStock } from "../utils/orderPricing.js";
 
-
 const sendOrderConfirmationEmail = async (user, order) => {
   const message = `
     <h2>Order Confirmation</h2>
@@ -12,18 +11,25 @@ const sendOrderConfirmationEmail = async (user, order) => {
     <p>It will be shipped to: ${order.address.street}, ${order.address.city}</p>
     <p>Thank you for shopping with ShopNest!</p>
   `;
-  await sendEmail({ email: user.email, subject: 'ShopNest - Order Confirmation', message });
+  await sendEmail({ email: user.email, subject: "ShopNest - Order Confirmation", message });
 };
 
 // ====| PERSIST ORDER |--------------------------------------------------------------
-export const persistOrder = async ({ user, items, totalAmount, address, paymentMethod, razorpay = {} }) => {
+export const persistOrder = async ({
+  user,
+  items,
+  totalAmount,
+  address,
+  paymentMethod,
+  razorpay = {},
+}) => {
   const order = new Order({
     userId: user._id,
     items,
     totalAmount,
     address,
     paymentMethod,
-    ...razorpay
+    ...razorpay,
   });
   const created = await order.save();
   await decrementStock(items);
@@ -39,7 +45,7 @@ export const getOrders = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}
+};
 
 // ====| GET MY ORDERS |--------------------------------------------------------------
 export const getMyOrders = async (req, res) => {
@@ -49,7 +55,7 @@ export const getMyOrders = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}
+};
 
 // ====| UPDATE ORDER STATUS |--------------------------------------------------------------
 export const updateOrderStatus = async (req, res) => {
@@ -60,7 +66,11 @@ export const updateOrderStatus = async (req, res) => {
     }
 
     if (req.user.isMock) {
-        return res.json({ ...order.toObject(), status: req.body.status || order.status, isMock: true });
+      return res.json({
+        ...order.toObject(),
+        status: req.body.status || order.status,
+        isMock: true,
+      });
     }
 
     order.status = req.body.status || order.status;
@@ -69,8 +79,7 @@ export const updateOrderStatus = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}
-
+};
 
 // ====| GET VENDOR EARNING |--------------------------------------------------------------
 export const getVendorEarning = async (req, res) => {
@@ -93,4 +102,4 @@ export const getVendorEarning = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}
+};

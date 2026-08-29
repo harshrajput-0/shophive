@@ -1,43 +1,42 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
-        lowercase: true,
-        index: true,
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      index: true,
     },
     password: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     role: {
-        type: String,
-        enum: ["user", "vendor", "admin"],
-        default: "user",
+      type: String,
+      enum: ["user", "vendor", "admin"],
+      default: "user",
     },
     // For vendor storefront
     avatar: {
-        type: String,
+      type: String,
     },
     description: {
-        type: String,
+      type: String,
     },
     // isMock is for seeded demos only
     isMock: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
-},
-    { timestamps: true }
-)
-
-
+  },
+  { timestamps: true }
+);
 
 const User = mongoose.model("User", userSchema);
 

@@ -1,6 +1,6 @@
-import { axiosClient } from './axiosClient';
+import { axiosClient } from "./axiosClient";
 
-const errorMessage = (err) => err.response?.data?.message || err.message || 'Something went wrong';
+const errorMessage = (err) => err.response?.data?.message || err.message || "Something went wrong";
 
 export const userService = {
   // GET /auth/vendors/:id  (public)  -> { _id, name, avatar, description }
@@ -17,7 +17,7 @@ export const userService = {
 
   // GET /auth/users  (admin only)  -> User[]  (never includes password)
   getAll: async () => {
-    const { data } = await axiosClient.get('/auth/users');
+    const { data } = await axiosClient.get("/auth/users");
     return data;
   },
 

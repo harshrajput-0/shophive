@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { inr } from '../../utils/formatCurrency.js';
-import { addItem, selectCartItems } from '../../store/slices/cartSlice.js';
-import { showToast } from '../../store/slices/uiSlice.js';
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { inr } from "../../utils/formatCurrency.js";
+import { addItem, selectCartItems } from "../../store/slices/cartSlice.js";
+import { showToast } from "../../store/slices/uiSlice.js";
 
 export default function ProductCard({ product }) {
   const dispatch = useDispatch();
@@ -13,15 +13,27 @@ export default function ProductCard({ product }) {
 
   const handleQuickAdd = () => {
     const existing = cartItems.find((x) => x.productId === product._id);
-    dispatch(addItem({ productId: product._id, name: product.name, price: product.price, imageUrl: product.imageUrl, qty: (existing?.qty || 0) + 1 }));
-    dispatch(showToast(`${product.name} added to cart`, 'ok'));
+    dispatch(
+      addItem({
+        productId: product._id,
+        name: product.name,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        qty: (existing?.qty || 0) + 1,
+      })
+    );
+    dispatch(showToast(`${product.name} added to cart`, "ok"));
   };
 
   return (
     <div className="relative flex flex-col overflow-hidden rounded-[14px] border border-border bg-bg-secondary">
       {/* Image + badges */}
       <div className="relative h-52.5 overflow-hidden bg-black">
-        <img src={product.imageUrl} alt={product.name} className="block h-full w-full object-cover" />
+        <img
+          src={product.imageUrl}
+          alt={product.name}
+          className="block h-full w-full object-cover"
+        />
         {/* Category ribbon, cut into a chevron shape with clip-path */}
         <span className="absolute top-3.5 left-0 [clip-path:polygon(0_50%,12%_0,100%_0,100%_100%,12%_100%)] bg-primary px-4.5 py-1.75 pr-4 text-[.66rem] font-extrabold tracking-[.04em] text-primary-foreground uppercase">
           {product.category}
@@ -39,11 +51,16 @@ export default function ProductCard({ product }) {
           {product.name}
         </h3>
         {vendor?.name && (
-          <Link to={`/vendor/${vendor._id}`} className="text-[.79rem] font-semibold text-text-secondary">
+          <Link
+            to={`/vendor/${vendor._id}`}
+            className="text-[.79rem] font-semibold text-text-secondary"
+          >
             by {vendor.name}
           </Link>
         )}
-        <p className="my-1 mb-2.5 font-display text-[1.4rem] font-bold text-primary">{inr(product.price)}</p>
+        <p className="my-1 mb-2.5 font-display text-[1.4rem] font-bold text-primary">
+          {inr(product.price)}
+        </p>
         <div className="flex gap-2">
           <Link
             to={`/product/${product._id}`}
