@@ -64,6 +64,15 @@ textarea {
   color: inherit;
 }
 
+select {
+  color-scheme: dark;
+}
+
+select option {
+  background-color: #211a10;
+  color: #f7efdd
+}
+
 button:disabled,
 input:disabled {
   cursor: not-allowed;
