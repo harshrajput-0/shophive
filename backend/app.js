@@ -1,4 +1,6 @@
 import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 import connectDB from "./src/config/db.js";
 import authRoutes from "./src/routes/auth.routes.js";
 import orderRoutes from "./src/routes/order.routes.js";
@@ -8,6 +10,9 @@ import analyticRoutes from "./src/routes/analytics.routes.js";
 
 import cors from "cors";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const frontendDist = path.join(__dirname, "..", "frontend", "dist");
+
 const app = express();
 connectDB();
 
@@ -16,12 +21,20 @@ app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 app.use(express.json());
 
 // Smaill server call that just need response
-app.get("/api/health", ( req, res ) => res.status(200).json({ status: "ok" }))
+
+app.get("/api/health", (req, res) => res.status(200).json({ status: "ok" }))
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/analytics", analyticRoutes);
+
+app.use(express.static(frontendDist));
+
+app.get(/^\/(?!api).*/, (req, res) => {
+    res.sendFile(path.join(frontendDist, 'index.html'));
+});
 
 export default app;
