@@ -53,7 +53,7 @@ export default function ProductCard({ product }) {
         {vendor?.name && (
           <Link
             to={`/vendor/${vendor._id}`}
-            className="text-[.79rem] font-semibold text-amber-800"
+            className="text-[.79rem] font-semibold text-border-strong"
           >
             by {vendor.name}
           </Link>

@@ -93,7 +93,7 @@ export default function CartPage() {
             <span>{inr(subtotal)}</span>
           </div>
 
-          <Button as="link" to="/checkout">
+          <Button as="link" to="/checkout" className="mb-4">
             Proceed to Checkout
           </Button>
           <Button variant="secondary" as="link" to="/shop">
