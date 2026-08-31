@@ -53,7 +53,7 @@ export default function ProductCard({ product }) {
         {vendor?.name && (
           <Link
             to={`/vendor/${vendor._id}`}
-            className="text-[.79rem] font-semibold text-text-secondary"
+            className="text-[.79rem] font-semibold text-amber-800"
           >
             by {vendor.name}
           </Link>
@@ -71,7 +71,7 @@ export default function ProductCard({ product }) {
           <button
             onClick={handleQuickAdd}
             disabled={product.stock === 0}
-            className="flex-1 cursor-pointer rounded-[9px] border border-primary bg-primary px-3 py-2.5 text-[.85rem] font-bold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex-1 cursor-pointer rounded-[9px] border border-primary bg-primary hover:border-primary-dark hover:bg-primary-dark px-3 py-2.5 text-[.85rem] font-bold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
           >
             Add
           </button>
