@@ -6,6 +6,25 @@
 * **Repository:** [github.com/harshrajput-0/shophive](https://github.com/harshrajput-0/shophive.git)
 
 ---
+## Preview
+
+### Customer Experience
+
+![ShopHive Home Page](./docs/home.webp)
+
+![Shop Page](./docs/shop.webp)
+
+![Product Detail](./docs/product-detail.webp)
+
+![Shopping Cart](./docs/cart.webp)
+
+### Vendor Experience
+
+![Vendor Storefront](./docs/vendor-storefront.webp)
+
+### Admin Experience
+![Vendor Storefront](./docs/admin-dashboard.webp)
+---
 
 ## Interactive Demo & Preview Accounts
 
