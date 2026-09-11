@@ -35,7 +35,7 @@ const Header = () => {
   };
 
   return (
-    <nav className="flex justify-between items-center px-10 py-4.5 bg-black/85 backdrop-blur-[14px] border-b border-border sticky top-0 z-1000 flex-wrap">
+    <nav className="flex justify-between items-center px-10 py-4.5 bg-black/85 backdrop-blur-[14px] border-b border-border sticky top-0 z-1000 flex-wrap px-40">
       <div className="flex items-center gap-2.5">
         <Link
           to="/"
