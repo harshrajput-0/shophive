@@ -13,6 +13,7 @@ import {
 import { Link } from "react-router-dom";
 
 import { logout } from "../../store/slices/authSlice";
+import { fetchProducts } from "../../store/slices/productsSlice";
 import { selectCartCount } from "../../store/slices/cartSlice";
 import { showToast } from "../../store/slices/uiSlice";
 import { useNavigate } from "react-router-dom";
@@ -30,12 +31,17 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logout());
+    // Products are fetched once at app startup and never refetched by the
+    // pages that read them, so re-pull the real DB state here — this is
+    // what actually discards any unsaved mock vendor/admin product edits
+    // instead of leaving them visible for whoever uses the app next.
+    dispatch(fetchProducts());
     dispatch(showToast("Signed out"));
     navigate("/login");
   };
 
   return (
-    <nav className="flex justify-between items-center px-10 py-4.5 bg-black/85 backdrop-blur-[14px] border-b border-border sticky top-0 z-1000 flex-wrap px-40">
+    <nav className="flex justify-between items-center px-10 py-4.5 bg-black/85 backdrop-blur-[14px] border-b border-border sticky top-0 z-1000 flex-wrap">
       <div className="flex items-center gap-2.5">
         <Link
           to="/"

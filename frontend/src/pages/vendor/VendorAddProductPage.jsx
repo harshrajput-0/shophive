@@ -10,12 +10,14 @@ export default function VendorAddProductPage() {
   const navigate = useNavigate();
 
   const handleSubmit = async (data) => {
-    // The backend sets the vendor from the logged-in user's token itself —
-    // there's no vendorId field to send here.
+    // The backend gets the vendor from the logged-in user.
+    // We don't need to send a vendorId.
     const result = await dispatch(createProduct(data));
     if (result.meta.requestStatus === "fulfilled") {
       dispatch(showToast("Product added", "ok"));
       navigate("/vendor-dashboard");
+    } else {
+      dispatch(showToast(result.payload || "Could not add product", "err"));
     }
   };
 

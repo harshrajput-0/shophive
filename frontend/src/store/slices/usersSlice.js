@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { userService } from "../../services/user.service.js";
+import { logout } from "./authSlice.js";
 
 export const fetchUsers = createAsyncThunk("users/fetchAll", () => userService.getAll());
 export const changeUserRole = createAsyncThunk(
@@ -27,7 +28,10 @@ const usersSlice = createSlice({
       })
       .addCase(changeUserRole.fulfilled, (state, action) => {
         state.list = state.list.map((u) => (u._id === action.payload._id ? action.payload : u));
-      });
+      })
+      // A mock admin's role change is never saved to the DB — clear it from
+      // memory on logout so it doesn't outlive the session.
+      .addCase(logout, () => initialState);
   },
 });
 

@@ -5,16 +5,21 @@ import { inr } from "../../utils/formatCurrency.js";
 import { selectProducts, deleteProduct } from "../../store/slices/productsSlice.js";
 import { showToast } from "../../store/slices/uiSlice.js";
 
-// Admins can only delete products here — adding/editing a product requires
-// a vendor account (POST/PUT /products are vendor-only on the backend).
+// Admins can only delete products 
+// Adding/editing a product requires a vendor account 
 export default function AdminProductsPage() {
   const dispatch = useDispatch();
   const products = useSelector(selectProducts);
 
-  const handleDelete = (product) => {
+  const handleDelete = async (product) => {
     if (!confirm(`Delete "${product.name}"?`)) return;
-    dispatch(deleteProduct(product._id));
-    dispatch(showToast(`${product.name} deleted`));
+    
+    const result = await dispatch(deleteProduct(product._id));
+    if (result.meta.requestStatus === "fulfilled") {
+      dispatch(showToast(`${product.name} deleted`, "ok"));
+    } else {
+      dispatch(showToast(result.payload || "Could not delete product", "err"));
+    }
   };
 
   return (

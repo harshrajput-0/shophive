@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { orderService } from "../../services/order.service.js";
+import { logout } from "./authSlice.js";
 
 export const fetchAllOrders = createAsyncThunk("orders/fetchAll", () => orderService.getAll());
 export const fetchMyOrders = createAsyncThunk("orders/fetchMine", (userId) =>
@@ -27,9 +28,8 @@ const ordersSlice = createSlice({
   name: "orders",
   initialState,
   reducers: {
-    // The real Razorpay order is created by paymentService.verify() directly
-    // (not a thunk, since it's driven by the Razorpay modal's callback), so
-    // CheckoutPage dispatches this to add it to the list once placed.
+    // Add the new order after a successful payment.
+    // Razorpay creates the order, and CheckoutPage adds it here.
     orderPlaced: (state, action) => {
       state.list.push(action.payload);
     },
@@ -56,7 +56,10 @@ const ordersSlice = createSlice({
       })
       .addCase(fetchVendorEarnings.rejected, (state) => {
         state.earningsStatus = "failed";
-      });
+      })
+      // Clear orders when the user logs out.
+      // This also removes temporary order-status changes.
+      .addCase(logout, () => initialState);
   },
 });
 

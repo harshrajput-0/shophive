@@ -14,8 +14,8 @@ export default function VendorEditProductPage() {
   const status = useSelector((state) => state.products.status);
 
   if (status === "succeeded" && !product) return <Navigate to="/vendor-dashboard" replace />;
-  // `vendor` is a populated object ({ _id, name, ... }) on products from
-  // GET /products — compare against its _id (there's no `vendorId` field).
+
+  // Check if this product belongs to the logged-in vendor
   if (product && (product.vendor?._id || product.vendor) !== user._id)
     return <Navigate to="/vendor-dashboard" replace />;
   if (!product) return null;
@@ -25,6 +25,8 @@ export default function VendorEditProductPage() {
     if (result.meta.requestStatus === "fulfilled") {
       dispatch(showToast("Product updated", "ok"));
       navigate("/vendor-dashboard");
+    } else {
+      dispatch(showToast(result.payload || "Could not update product", "err"));
     }
   };
 

@@ -2,15 +2,46 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { productService } from "../../services/product.service.js";
 
 export const fetchProducts = createAsyncThunk("products/fetchAll", () => productService.getAll());
-export const createProduct = createAsyncThunk("products/create", (data) =>
-  productService.create(data)
+
+export const createProduct = createAsyncThunk(
+  "products/create",
+  async (data, { rejectWithValue }) => {
+    try {
+      return await productService.create(data);
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
 );
-export const updateProduct = createAsyncThunk("products/update", ({ id, data }) =>
-  productService.update(id, data)
+
+export const updateProduct = createAsyncThunk(
+  "products/update",
+  async ({ id, data }, { rejectWithValue }) => {
+    try {
+      return await productService.update(id, data);
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
 );
-export const deleteProduct = createAsyncThunk("products/delete", (id) => productService.remove(id));
+
+export const deleteProduct = createAsyncThunk(
+  "products/delete",
+  async (id, { rejectWithValue }) => {
+    try {
+      return await productService.remove(id);
+    } catch (err) {
+      return rejectWithValue(err.message);
+    }
+  }
+);
 
 const initialState = { list: [], status: "idle" };
+
+// Products are loaded when the app starts.
+// Public pages use the same product list and don't fetch again.
+// Instead, Header fetches fresh products from the database after logout.
+// This also removes any unsaved changes made using mock account.
 
 const productsSlice = createSlice({
   name: "products",
